@@ -1,0 +1,432 @@
+/* 전체 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+
+  font-family: sans-serif;
+
+  background: linear-gradient(
+    180deg,
+    #dfeeff 0%,
+    #edf5ff 100%
+  );
+
+  min-height: 100vh;
+}
+
+/* 메인 컨테이너 */
+
+.container {
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  min-height: 90vh;
+  padding: 40px 20px;
+}
+
+/* 타이틀 */
+
+.main-title {
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+.main-title h1 {
+
+  font-size: 80px;
+
+  color: #2563eb;
+
+  font-weight: 800;
+
+  margin-bottom: 3px;
+}
+
+.main-title p {
+
+  font-size: 20px;
+
+  color: #35518f;
+}
+
+/* 버튼 영역 */
+
+.action-wrapper {
+
+  display: flex;
+
+  gap: 24px;
+
+  margin-bottom: 20px;
+}
+
+/* 카드 공통 */
+
+.action-card {
+
+  flex: 1;
+
+  background: rgba(255,255,255,0.65);
+
+  border-radius: 24px;
+
+  padding: 22px 26px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.05);
+}
+
+/* hover */
+
+.action-card:hover {
+
+  transform: translateY(-4px);
+}
+
+/* 왼쪽 */
+
+.left {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 22px;
+}
+
+/* 아이콘 */
+
+.icon {
+
+  width: 58px;
+  height: 58px;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 28px;
+
+  color: white;
+}
+
+/* 공유 버튼 */
+
+.share .icon {
+
+  background: #2f6bff;
+}
+
+/* 작성 버튼 */
+
+.write .icon {
+
+  background: #17b95b;
+}
+
+/* 텍스트 */
+
+.text h3 {
+
+  font-size: 24px;
+
+  margin-bottom: 6px;
+}
+
+.text p {
+
+  font-size: 16px;
+
+  color: #5b6475;
+}
+
+/* 공유 */
+
+.share h3 {
+
+  color: #1f4dcb;
+}
+
+/* 작성 */
+
+.write h3 {
+
+  color: #159047;
+}
+
+/* 화살표 */
+
+.arrow {
+
+  font-size: 36px;
+
+  color: #7a8eb9;
+}
+
+/* 빈 메시지 영역 */
+
+.message-board {
+
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 32px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+
+  /* 레이아웃 (정렬 속성 최적화) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 내부 정렬을 부모에서 확실하게 제어 */
+  text-align: center;
+
+  /* 여백 및 높이 (글자 삭제 시 늘어남 방지) */
+  padding: 60px 40px;
+  min-height: 300px;
+}
+
+.message-board *:empty {
+  display: none !important;
+}
+
+.message-board h2 {
+
+  font-size: 25px;
+
+  color: #35518f;
+
+  margin-bottom: 20px;
+}
+
+.message-board p {
+
+  font-size: 17px;
+
+  color: #7a859d;
+}
+
+/* 모달 배경 */
+
+.modal-overlay {
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.35);
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+/* 모달 */
+
+.modal-content {
+
+  width: 560px;
+
+  background: white;
+
+  border-radius: 30px;
+
+  padding: 36px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 22px;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.12);
+}
+
+/* 제목 */
+
+.modal-title {
+
+  font-size: 40px;
+
+  color: #35518f;
+}
+
+/* textarea */
+
+.message-input {
+
+  width: 100%;
+
+  height: 240px;
+
+  resize: none;
+
+  border: 2px solid #dce7ff;
+
+  border-radius: 20px;
+
+  padding: 20px;
+
+  font-size: 18px;
+
+  outline: none;
+}
+
+/* 닉네임 */
+
+.nickname-input {
+
+  width: 100%;
+
+  height: 58px;
+
+  border: 2px solid #dce7ff;
+
+  border-radius: 16px;
+
+  padding: 0 18px;
+
+  font-size: 16px;
+
+  outline: none;
+}
+
+/* 버튼 그룹 */
+
+.modal-button-group {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 14px;
+}
+
+/* 버튼 */
+
+.submit-btn,
+.cancel-btn {
+
+  border: none;
+
+  padding: 14px 22px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  transition: 0.2s;
+}
+
+/* 완료 */
+
+.submit-btn {
+
+  background: #2f6bff;
+
+  color: white;
+}
+
+/* 취소 */
+
+.cancel-btn {
+
+  background: #eef3ff;
+
+  color: #4e5f82;
+}
+
+
+.postit-container {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 36px;
+
+  justify-content: center;
+}
+
+.postit {
+
+  width: 220px;
+
+  background: #fff3a3;
+
+  min-height: 180px;
+
+  border-radius: 14px;
+
+  padding: 20px;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+}
+
+.postit p {
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  line-height: 1.5;
+}
+
+.postit span {
+
+  text-align: right;
+
+  margin-top: 16px;
+
+  font-size: 14px;
+
+  color: #555;
+}
