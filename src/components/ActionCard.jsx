@@ -83,7 +83,7 @@ function ActionCard({ type, title, description, onClick }) {
                 <p>{description}</p>
             </div>
 
-            <span className="action-arrow">›</span>
+            <span className="action-arrow">&gt;</span>
         </button>
     );
 }

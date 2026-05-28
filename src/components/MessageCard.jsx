@@ -1,4 +1,4 @@
-function MessageCard({ message, onEdit, onDelete, onLike }) {
+function MessageCard({ message, onEdit, onDelete }) {
     return (
         <article className="message-card">
             <div className="message-actions">
@@ -84,15 +84,6 @@ function MessageCard({ message, onEdit, onDelete, onLike }) {
 
             <div className="message-footer">
                 <span>- {message.nickname || "익명"} -</span>
-
-                <button
-                    type="button"
-                    className={`heart-button ${message.isLiked ? "liked" : ""}`}
-                    onClick={() => onLike(message.id)}
-                    title="좋아요"
-                >
-                    {message.isLiked ? "♥" : "♡"}
-                </button>
             </div>
         </article>
     );
