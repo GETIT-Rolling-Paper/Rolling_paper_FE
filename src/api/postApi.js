@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api/messages";
+const BASE_URL = "http://localhost:3000/api/messages";
 
 // 전체 메시지 조회
 export const getMessages = async () => {
@@ -12,7 +12,7 @@ export const getMessages = async () => {
 };
 
 // 메시지 작성
-export const createMessage = async ({ content, nickname, password }) => {
+export const createMessage = async ({ content, nickname, color, password }) => {
     const response = await fetch(BASE_URL, {
         method: "POST",
         headers: {
@@ -21,6 +21,7 @@ export const createMessage = async ({ content, nickname, password }) => {
         body: JSON.stringify({
             content,
             nickname,
+            color,
             password,
         }),
     });

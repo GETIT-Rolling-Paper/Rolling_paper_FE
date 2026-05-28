@@ -5,8 +5,6 @@ function MessageList({
     totalCount,
     searchText,
     setSearchText,
-    sortType,
-    setSortType,
     onEdit,
     onDelete,
     onLike,
@@ -16,19 +14,11 @@ function MessageList({
             <div className="message-header">
                 <div className="message-title">
                     <div className="chat-icon">•••</div>
-                    <h2>나에게 온 롤링페이퍼</h2>
+                    <h2>GETIT에게 온 롤링페이퍼</h2>
                     <span>{totalCount}</span>
                 </div>
 
                 <div className="message-tools">
-                    <select
-                        value={sortType}
-                        onChange={(event) => setSortType(event.target.value)}
-                    >
-                        <option value="latest">최신순</option>
-                        <option value="oldest">오래된순</option>
-                    </select>
-
                     <div className="search-box">
                         <input
                             type="text"
