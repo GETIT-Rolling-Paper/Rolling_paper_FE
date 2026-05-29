@@ -1,12 +1,4 @@
-const COLOR_MAP = {
-    yellow: "#fff3a3",
-    pink:   "#ffd6e0",
-    blue:   "#d0e8ff",
-    green:  "#d4f5e2",
-};
-
-function MessageCard({ message, onEdit, onDelete, onLike }) {
-    const bgColor = COLOR_MAP[message.color] || COLOR_MAP.yellow;
+function MessageCard({ message, onEdit, onDelete }) {
     return (
         <article className="message-card" style={{ background: bgColor }}>
             <div className="message-actions">
@@ -92,15 +84,6 @@ function MessageCard({ message, onEdit, onDelete, onLike }) {
 
             <div className="message-footer">
                 <span>- {message.nickname || "익명"} -</span>
-
-                <button
-                    type="button"
-                    className={`heart-button ${message.isLiked ? "liked" : ""}`}
-                    onClick={() => onLike(message.id)}
-                    title="좋아요"
-                >
-                    {message.isLiked ? "♥" : "♡"}
-                </button>
             </div>
         </article>
     );
