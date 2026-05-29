@@ -3,17 +3,18 @@ import MessageCard from "./MessageCard";
 function MessageList({
     messages,
     totalCount,
-    sortType,
-    setSortType,
+    searchText,
+    setSearchText,
     onEdit,
     onDelete,
+    onLike,
 }) {
     return (
         <section className="message-section">
             <div className="message-header">
                 <div className="message-title">
-                    <div className="chat-icon">...</div>
-                    <h2>나에게 온 롤링페이퍼</h2>
+                    <div className="chat-icon">•••</div>
+                    <h2>GETIT에게 온 롤링페이퍼</h2>
                     <span>{totalCount}</span>
                 </div>
 
@@ -40,6 +41,7 @@ function MessageList({
                             message={message}
                             onEdit={onEdit}
                             onDelete={onDelete}
+                            onLike={onLike}
                         />
                     ))
                 )}

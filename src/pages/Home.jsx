@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ActionCard from "../components/ActionCard";
 import MessageList from "../components/MessageList";
 import {
@@ -10,8 +10,7 @@ import {
 
 function Home() {
     const [messages, setMessages] = useState([]);
-    const [sortType, setSortType] = useState("latest");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [searchText, setSearchText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
@@ -20,7 +19,7 @@ function Home() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteTargetId, setDeleteTargetId] = useState(null);
 
-    const loadMessages = useCallback(async () => {
+    const loadMessages = async () => {
         try {
             setIsLoading(true);
 
@@ -30,6 +29,8 @@ function Home() {
                 id: message.id,
                 content: message.content,
                 nickname: message.nickname || "익명",
+                color: message.color || "yellow",
+                isLiked: false,
                 createdAt: message.createdAt || new Date().toISOString(),
             }));
 
@@ -40,24 +41,26 @@ function Home() {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    };
 
     useEffect(() => {
         loadMessages();
-    }, [loadMessages]);
+    }, []);
 
-    const pageSize = 8;
-    const totalPages = Math.ceil(messages.length / pageSize);
-    const pagedMessages = messages.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-    );
+    const filteredMessages = useMemo(() => {
+        return messages.filter((message) =>
+            message.content.toLowerCase().includes(searchText.toLowerCase())
+        );
+    }, [messages, searchText]);
 
-    useEffect(() => {
-        if (totalPages > 0 && currentPage > totalPages) {
-            setCurrentPage(totalPages);
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert("롤링페이퍼 링크가 복사되었습니다!");
+        } catch {
+            alert("링크 복사에 실패했습니다.");
         }
-    }, [currentPage, totalPages]);
+    };
 
     const handleOpenWriteModal = () => {
         setEditingMessage(null);
@@ -159,18 +162,44 @@ function Home() {
         }
     };
 
+    const handleLike = (id) => {
+        const likedMessages = messages.map((message) =>
+            message.id === id
+                ? {
+                    ...message,
+                    isLiked: !message.isLiked,
+                }
+                : message
+        );
+
+        setMessages(likedMessages);
+    };
+
     return (
         <main className="page">
             <section className="hero-section">
-                <h1>친구의 롤링페이퍼</h1>
-                <p>익명으로 마음을 전해보세요.</p>
+                <div className="hero-title">
+                    <img src="/GETIT_LOGO.png" alt="GETIT 로고" className="hero-logo" />
+                    <div className="hero-text">
+                        <span className="hero-label">GETIT</span>
+                        <h1>롤링페이퍼</h1>
+                    </div>
+                </div>
+                <p>익명으로 마음을 전해보세요! 💙</p>
             </section>
 
             <section className="action-section">
                 <ActionCard
+                    type="share"
+                    title="롤링페이퍼 공유하기"
+                    description="친구들에게 링크를 공유해보세요!"
+                    onClick={handleShare}
+                />
+
+                <ActionCard
                     type="write"
                     title="롤링페이퍼 작성하기"
-                    description="익명으로 마음을 남겨보세요."
+                    description="익명으로 마음을 남겨보세요!"
                     onClick={handleOpenWriteModal}
                 />
             </section>
@@ -178,31 +207,16 @@ function Home() {
             {isLoading ? (
                 <p className="loading-message">롤링페이퍼를 불러오는 중입니다...</p>
             ) : (
-                <>
-                    <MessageList
-                        messages={pagedMessages}
-                        totalCount={messages.length}
-                        sortType={sortType}
-                        setSortType={setSortType}
-                        onEdit={handleOpenEditModal}
-                        onDelete={handleOpenDeleteModal}
-                    />
+                <MessageList
+                    messages={filteredMessages}
+                    totalCount={messages.length}
+                    searchText={searchText}
+                    setSearchText={setSearchText}
 
-                    {totalPages > 1 && (
-                        <div className="pagination">
-                            {Array.from({ length: totalPages }, (_, index) => (
-                                <button
-                                    key={index + 1}
-                                    type="button"
-                                    className={currentPage === index + 1 ? "active" : ""}
-                                    onClick={() => setCurrentPage(index + 1)}
-                                >
-                                    {index + 1}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </>
+                    onEdit={handleOpenEditModal}
+                    onDelete={handleOpenDeleteModal}
+                    onLike={handleLike}
+                />
             )}
 
             {isWriteModalOpen && (
@@ -246,7 +260,52 @@ function PasswordInput({ value, onChange, placeholder }) {
                 onClick={() => setIsVisible(!isVisible)}
                 title={isVisible ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
-                {isVisible ? "숨기기" : "보기"}
+                {isVisible ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M3 3L21 21"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                        />
+                        <path
+                            d="M10.7 10.7A2 2 0 0 0 13.3 13.3"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                        />
+                        <path
+                            d="M9.5 5.5A9.8 9.8 0 0 1 12 5C17 5 20.5 9 22 12C21.4 13.2 20.5 14.5 19.3 15.6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            d="M6.2 6.7C4.2 8 2.8 10.1 2 12C3.5 15 7 19 12 19C13.4 19 14.7 18.7 15.8 18.1"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M2 12C3.5 9 7 5 12 5C17 5 20.5 9 22 12C20.5 15 17 19 12 19C7 19 3.5 15 2 12Z"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinejoin="round"
+                        />
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                        />
+                    </svg>
+                )}
             </button>
         </div>
     );
@@ -284,18 +343,18 @@ function MessageFormModal({ mode, initialMessage, onClose, onSubmit }) {
                 <div className="modal-header">
                     <div>
                         <span className="modal-badge">
-                            {isEditMode ? "수정" : "작성"}
+                            {isEditMode ? "Edit Letter" : "New Letter"}
                         </span>
                         <h2>{isEditMode ? "마음 수정하기" : "마음 남기기"}</h2>
                         <p>
                             {isEditMode
-                                ? "작성했던 롤링페이퍼를 다시 수정해보세요."
-                                : "익명이지만 따뜻한 별명으로 마음을 전해보세요."}
+                                ? "작성했던 롤링페이퍼를 다시 다듬어보세요."
+                                : "익명이지만, 따뜻한 별명으로 마음을 전해보세요."}
                         </p>
                     </div>
 
                     <button type="button" className="modal-close-button" onClick={onClose}>
-                        x
+                        ×
                     </button>
                 </div>
 
@@ -303,7 +362,7 @@ function MessageFormModal({ mode, initialMessage, onClose, onSubmit }) {
                     <span>전하고 싶은 말</span>
                     <textarea
                         value={content}
-                        placeholder="예: 항상 응원하고 있어!"
+                        placeholder="예: 항상 응원하고 있어! 너의 하루가 조금 더 따뜻했으면 좋겠어."
                         onChange={(event) => setContent(event.target.value)}
                     />
                 </label>
@@ -313,7 +372,7 @@ function MessageFormModal({ mode, initialMessage, onClose, onSubmit }) {
                     <input
                         type="text"
                         value={nickname}
-                        placeholder="예: 익명의 감자"
+                        placeholder="예: 익명의 고양이, 파란 감자, 지나가던 선배"
                         onChange={(event) => setNickname(event.target.value)}
                     />
                 </label>
@@ -369,13 +428,13 @@ function DeletePasswordModal({ onClose, onSubmit }) {
             <form className="message-modal small" onSubmit={handleSubmit}>
                 <div className="modal-header">
                     <div>
-                        <span className="modal-badge delete">삭제</span>
+                        <span className="modal-badge delete">Delete Letter</span>
                         <h2>롤링페이퍼 삭제하기</h2>
                         <p>작성할 때 입력한 비밀번호가 필요해요.</p>
                     </div>
 
                     <button type="button" className="modal-close-button" onClick={onClose}>
-                        x
+                        ×
                     </button>
                 </div>
 
