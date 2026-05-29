@@ -18,14 +18,15 @@ function MessageList({
                 </div>
 
                 <div className="message-tools">
-                    <select
-                        value={sortType}
-                        onChange={(event) => setSortType(event.target.value)}
-                    >
-                        <option value="latest">최신순</option>
-                        <option value="oldest">오래된순</option>
-                    </select>
-
+                    <div className="search-box">
+                        <input
+                            type="text"
+                            placeholder="검색어를 입력하세요"
+                            value={searchText}
+                            onChange={(event) => setSearchText(event.target.value)}
+                        />
+                        <span>🔍</span>
+                    </div>
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 function MessageCard({ message, onEdit, onDelete }) {
     return (
-        <article className="message-card">
+        <article className="message-card" style={{ background: bgColor }}>
             <div className="message-actions">
                 <button
                     type="button"

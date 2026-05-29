@@ -33,7 +33,7 @@ function Home() {
                 createdAt: message.createdAt || new Date().toISOString(),
             }));
 
-            setMessages(formattedMessages);
+            setMessages([...formattedMessages].reverse());
         } catch (error) {
             console.error(error);
             alert("백엔드 서버에서 메시지를 불러오지 못했습니다.");
@@ -78,7 +78,7 @@ function Home() {
         setIsWriteModalOpen(false);
     };
 
-    const handleSubmitMessage = async ({ content, nickname, password }) => {
+    const handleSubmitMessage = async ({ content, nickname, color, password }) => {
         if (content.trim() === "") {
             alert("메시지를 입력해주세요.");
             return;
@@ -107,6 +107,7 @@ function Home() {
                 await createMessage({
                     content,
                     nickname,
+                    color,
                     password,
                 });
 
@@ -251,10 +252,18 @@ function PasswordInput({ value, onChange, placeholder }) {
     );
 }
 
+const COLOR_OPTIONS = [
+    { label: "노랑", value: "yellow", hex: "#fff3a3" },
+    { label: "핑크", value: "pink",   hex: "#ffd6e0" },
+    { label: "파랑", value: "blue",   hex: "#d0e8ff" },
+    { label: "초록", value: "green",  hex: "#d4f5e2" },
+];
+
 function MessageFormModal({ mode, initialMessage, onClose, onSubmit }) {
     const [content, setContent] = useState(initialMessage?.content || "");
     const [nickname, setNickname] = useState(initialMessage?.nickname || "");
     const [password, setPassword] = useState("");
+    const [color, setColor] = useState(initialMessage?.color || "yellow");
 
     const isEditMode = mode === "edit";
 
@@ -264,6 +273,7 @@ function MessageFormModal({ mode, initialMessage, onClose, onSubmit }) {
         onSubmit({
             content,
             nickname,
+            color,
             password,
         });
     };
@@ -307,6 +317,22 @@ function MessageFormModal({ mode, initialMessage, onClose, onSubmit }) {
                         onChange={(event) => setNickname(event.target.value)}
                     />
                 </label>
+
+                <div className="modal-label">
+                    <span>포스트잇 색상</span>
+                    <div className="color-options">
+                        {COLOR_OPTIONS.map((option) => (
+                            <button
+                                key={option.value}
+                                type="button"
+                                className={`color-circle ${color === option.value ? "selected" : ""}`}
+                                style={{ background: option.hex }}
+                                onClick={() => setColor(option.value)}
+                                title={option.label}
+                            />
+                        ))}
+                    </div>
+                </div>
 
                 <label className="modal-label">
                     <span>수정/삭제용 비밀번호</span>
