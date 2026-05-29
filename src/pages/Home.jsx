@@ -12,6 +12,8 @@ function Home() {
     const [messages, setMessages] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const PAGE_SIZE = 12;
 
     const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
     const [editingMessage, setEditingMessage] = useState(null);
@@ -53,14 +55,11 @@ function Home() {
         );
     }, [messages, searchText]);
 
-    const handleShare = async () => {
-        try {
-            await navigator.clipboard.writeText(window.location.href);
-            alert("롤링페이퍼 링크가 복사되었습니다!");
-        } catch {
-            alert("링크 복사에 실패했습니다.");
-        }
-    };
+    const totalPages = Math.ceil(filteredMessages.length / PAGE_SIZE);
+    const pagedMessages = filteredMessages.slice(
+        (currentPage - 1) * PAGE_SIZE,
+        currentPage * PAGE_SIZE
+    );
 
     const handleOpenWriteModal = () => {
         setEditingMessage(null);
@@ -190,13 +189,6 @@ function Home() {
 
             <section className="action-section">
                 <ActionCard
-                    type="share"
-                    title="롤링페이퍼 공유하기"
-                    description="친구들에게 링크를 공유해보세요!"
-                    onClick={handleShare}
-                />
-
-                <ActionCard
                     type="write"
                     title="롤링페이퍼 작성하기"
                     description="익명으로 마음을 남겨보세요!"
@@ -207,16 +199,44 @@ function Home() {
             {isLoading ? (
                 <p className="loading-message">롤링페이퍼를 불러오는 중입니다...</p>
             ) : (
-                <MessageList
-                    messages={filteredMessages}
-                    totalCount={messages.length}
-                    searchText={searchText}
-                    setSearchText={setSearchText}
-
-                    onEdit={handleOpenEditModal}
-                    onDelete={handleOpenDeleteModal}
-                    onLike={handleLike}
-                />
+                <>
+                    <MessageList
+                        messages={pagedMessages}
+                        totalCount={messages.length}
+                        searchText={searchText}
+                        setSearchText={setSearchText}
+                        onEdit={handleOpenEditModal}
+                        onDelete={handleOpenDeleteModal}
+                        onLike={handleLike}
+                    />
+                    {totalPages > 1 && (
+                        <div className="pagination">
+                            <button
+                                className="page-btn"
+                                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                                disabled={currentPage === 1}
+                            >
+                                이전
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                                <button
+                                    key={page}
+                                    className={`page-btn ${currentPage === page ? "active" : ""}`}
+                                    onClick={() => setCurrentPage(page)}
+                                >
+                                    {page}
+                                </button>
+                            ))}
+                            <button
+                                className="page-btn"
+                                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                                disabled={currentPage === totalPages}
+                            >
+                                다음
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
 
             {isWriteModalOpen && (

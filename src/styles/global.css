@@ -127,14 +127,14 @@ body::after {
 }
 
 .action-section {
-    width: min(880px, 100%);
+    width: 540px;
     margin: 0 auto 36px;
     padding: 18px;
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 12px 30px rgba(27, 80, 130, 0.14);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 18px;
 }
 
@@ -234,6 +234,7 @@ body::after {
 
 .message-section {
     width: min(1100px, 100%);
+    min-height: 600px;
     margin: 0 auto;
     padding: 28px;
     border-radius: 22px;
@@ -325,7 +326,10 @@ body::after {
 .message-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, minmax(170px, auto));
+    align-content: start;
     gap: 18px;
+    min-height: 600px;
 }
 
 .message-card {
@@ -640,6 +644,45 @@ body::after {
 .password-input-box input {
     padding-right: 54px;
     letter-spacing: 4px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.page-btn {
+    min-width: 38px;
+    height: 38px;
+    border: 1px solid #d9e3ef;
+    border-radius: 10px;
+    background: white;
+    color: #17366f;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0 12px;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #e5f1ff;
+    border-color: #1459e8;
+    color: #1459e8;
+}
+
+.page-btn.active {
+    background: #1459e8;
+    border-color: #1459e8;
+    color: white;
+}
+
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
 }
 
 .password-eye-button {
