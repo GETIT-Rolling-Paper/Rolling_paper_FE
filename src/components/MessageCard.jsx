@@ -1,12 +1,4 @@
-const COLOR_MAP = {
-    yellow: "#fff3a3",
-    pink:   "#ffd6e0",
-    blue:   "#d0e8ff",
-    green:  "#d4f5e2",
-};
-
-function MessageCard({ message, onEdit, onDelete, onLike }) {
-    const bgColor = COLOR_MAP[message.color] || COLOR_MAP.yellow;
+function MessageCard({ message, onEdit, onDelete }) {
     return (
         <article className="message-card" style={{ background: bgColor }}>
             <div className="message-actions">

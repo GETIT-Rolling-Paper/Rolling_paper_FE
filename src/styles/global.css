@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+}
 
 body {
     margin: 0;
@@ -149,6 +150,7 @@ body::after {
     cursor: pointer;
     text-align: left;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 520px;
 }
 
 .action-card:hover {
@@ -287,8 +289,7 @@ body::after {
     gap: 8px;
 }
 
-.message-tools select,
-.search-box {
+.message-tools select{
     height: 40px;
     border: 1px solid #d9e3ef;
     border-radius: 10px;
@@ -301,26 +302,6 @@ body::after {
     color: #17366f;
     font-weight: 700;
     outline: none;
-}
-
-.search-box {
-    width: 230px;
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    gap: 8px;
-}
-
-.search-box input {
-    width: 100%;
-    border: none;
-    outline: none;
-    color: #17366f;
-    font-weight: 600;
-}
-
-.search-box input::placeholder {
-    color: #8a9bb5;
 }
 
 .message-grid {
@@ -398,23 +379,6 @@ body::after {
     font-weight: 700;
 }
 
-.heart-button {
-    border: none;
-    background: none;
-    color: #6c83aa;
-    font-size: 26px;
-    cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.heart-button:hover {
-    transform: scale(1.12);
-}
-
-.heart-button.liked {
-    color: #ff5c8a;
-}
-
 .empty-message {
     grid-column: 1 / -1;
     margin: 40px 0;
@@ -434,6 +398,31 @@ body::after {
     font-weight: 800;
     text-align: center;
     box-shadow: 0 14px 32px rgba(27, 80, 130, 0.12);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px auto 0;
+}
+
+.pagination button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d9e3ef;
+    border-radius: 10px;
+    background: white;
+    color: #17366f;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(18, 58, 120, 0.06);
+}
+
+.pagination button.active {
+    border-color: #1469ed;
+    background: #1469ed;
+    color: white;
 }
 
 .modal-backdrop {
@@ -788,10 +777,6 @@ body::after {
     .message-tools {
         width: 100%;
         flex-direction: column;
-    }
-
-    .search-box {
-        width: 100%;
     }
 
     .message-modal {
