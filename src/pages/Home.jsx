@@ -13,6 +13,8 @@ function Home() {
     const [sortType, setSortType] = useState("latest");
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const PAGE_SIZE = 12;
 
     const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
     const [editingMessage, setEditingMessage] = useState(null);
@@ -53,11 +55,11 @@ function Home() {
         currentPage * pageSize
     );
 
-    useEffect(() => {
-        if (totalPages > 0 && currentPage > totalPages) {
-            setCurrentPage(totalPages);
-        }
-    }, [currentPage, totalPages]);
+    const totalPages = Math.ceil(filteredMessages.length / PAGE_SIZE);
+    const pagedMessages = filteredMessages.slice(
+        (currentPage - 1) * PAGE_SIZE,
+        currentPage * PAGE_SIZE
+    );
 
     const handleOpenWriteModal = () => {
         setEditingMessage(null);
@@ -182,24 +184,37 @@ function Home() {
                     <MessageList
                         messages={pagedMessages}
                         totalCount={messages.length}
-                        sortType={sortType}
-                        setSortType={setSortType}
+                        searchText={searchText}
+                        setSearchText={setSearchText}
                         onEdit={handleOpenEditModal}
                         onDelete={handleOpenDeleteModal}
+                        onLike={handleLike}
                     />
-
                     {totalPages > 1 && (
                         <div className="pagination">
-                            {Array.from({ length: totalPages }, (_, index) => (
+                            <button
+                                className="page-btn"
+                                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                                disabled={currentPage === 1}
+                            >
+                                이전
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                                 <button
-                                    key={index + 1}
-                                    type="button"
-                                    className={currentPage === index + 1 ? "active" : ""}
-                                    onClick={() => setCurrentPage(index + 1)}
+                                    key={page}
+                                    className={`page-btn ${currentPage === page ? "active" : ""}`}
+                                    onClick={() => setCurrentPage(page)}
                                 >
-                                    {index + 1}
+                                    {page}
                                 </button>
                             ))}
+                            <button
+                                className="page-btn"
+                                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                                disabled={currentPage === totalPages}
+                            >
+                                다음
+                            </button>
                         </div>
                     )}
                 </>
